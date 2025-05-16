@@ -3,8 +3,8 @@
  * @module useFacebookPixel
  * @returns {Object} Methods to interact with Facebook Pixel
  */
-import { useEffect, useCallback } from 'react';
-import * as fbEvents from '../lib/facebookEvents';
+import { useCallback, useEffect } from "react";
+import * as fbEvents from "../lib/facebookEvents";
 
 /**
  * React hook for easily implementing Facebook Pixel in your application
@@ -21,24 +21,22 @@ const useFacebookPixel = ({
   debug = false,
   consentRequired = true,
   hasInitialConsent = false,
-  autoInit = true
+  autoInit = true,
 } = {}) => {
   // Initialize Facebook Pixel script
   useEffect(() => {
     if (!pixelId) {
-      console.error('Facebook Pixel ID is required for initialization');
+      console.error("Facebook Pixel ID is required for initialization");
       return;
     }
 
     // Check if Facebook Pixel script is already present
     if (!window.fbq) {
       // Dynamically inject the Facebook Pixel script into the page
-      (function (f, b, e, v, n, t, s) {
+      ((f, b, e, v, n, t, s) => {
         if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
+        n = f.fbq = () => {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
         };
         if (!f._fbq) f._fbq = n;
         n.push = n;
@@ -50,12 +48,7 @@ const useFacebookPixel = ({
         t.src = v;
         s = b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
+      })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
     }
 
     // Initialize the Facebook Pixel events module if autoInit is true
@@ -63,7 +56,7 @@ const useFacebookPixel = ({
       fbEvents.initializeFacebookPixel(pixelId, {
         debug,
         consentRequired,
-        hasConsent: hasInitialConsent
+        hasConsent: hasInitialConsent,
       });
     }
 

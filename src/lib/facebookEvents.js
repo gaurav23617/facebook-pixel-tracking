@@ -21,7 +21,7 @@
 const config = {
   enableDebugMode: false,
   consentRequired: true,
-  hasConsent: false
+  hasConsent: false,
 };
 
 /**
@@ -33,8 +33,8 @@ const config = {
 export const enableDebugMode = (enable = true) => {
   config.enableDebugMode = enable;
   if (enable && window.fbq) {
-    window.fbq('set', 'autoConfig', false, 'YOUR_PIXEL_ID');
-    console.info('Facebook Pixel debug mode enabled');
+    window.fbq("set", "autoConfig", false, "YOUR_PIXEL_ID");
+    console.info("Facebook Pixel debug mode enabled");
   }
 };
 
@@ -66,12 +66,12 @@ export const setConsentRequirement = (required) => {
  */
 const canTrack = () => {
   if (!window.fbq) {
-    console.error('Facebook Pixel is not initialized');
+    console.error("Facebook Pixel is not initialized");
     return false;
   }
 
   if (config.consentRequired && !config.hasConsent) {
-    console.warn('User consent required but not provided for Facebook Pixel tracking');
+    console.warn("User consent required but not provided for Facebook Pixel tracking");
     return false;
   }
 
@@ -89,7 +89,7 @@ export const facebookPageView = () => {
   window.fbq("track", "PageView");
 
   if (config.enableDebugMode) {
-    console.info('Facebook Pixel PageView event fired');
+    console.info("Facebook Pixel PageView event fired");
   }
 };
 
@@ -104,7 +104,7 @@ export const facebookEvent = (eventName, eventOptions = {}) => {
   if (!canTrack()) return;
 
   if (!eventName) {
-    console.error('Event name is required for Facebook Pixel tracking');
+    console.error("Event name is required for Facebook Pixel tracking");
     return;
   }
 
@@ -126,7 +126,7 @@ export const facebookCustomEvent = (eventName, eventOptions = {}) => {
   if (!canTrack()) return;
 
   if (!eventName) {
-    console.error('Event name is required for Facebook Pixel custom tracking');
+    console.error("Event name is required for Facebook Pixel custom tracking");
     return;
   }
 
@@ -144,18 +144,21 @@ export const facebookCustomEvent = (eventName, eventOptions = {}) => {
  * @param {object} [formData] - Optional form data to include with the event
  * @param {string} [formName] - Optional name of the form being submitted
  */
-export const facebookSubmitFormEvent = (formData = {}, formName = '') => {
+export const facebookSubmitFormEvent = (formData = {}, formName = "") => {
   if (!canTrack()) return;
 
   const eventParams = {
     ...formData,
-    ...(formName ? { form_name: formName } : {})
+    ...(formName ? { form_name: formName } : {}),
   };
 
   window.fbq("trackCustom", "SubmitForm", eventParams);
 
   if (config.enableDebugMode) {
-    console.info(`Facebook Pixel SubmitForm event fired${formName ? ` for ${formName}` : ''}`, eventParams);
+    console.info(
+      `Facebook Pixel SubmitForm event fired${formName ? ` for ${formName}` : ""}`,
+      eventParams,
+    );
   }
 };
 
@@ -166,7 +169,7 @@ export const facebookSubmitFormEvent = (formData = {}, formName = '') => {
  * @param {object} [eventOptions] - Additional parameters for the event
  */
 export const facebookLeadEvent = (eventOptions = {}) => {
-  facebookEvent('Lead', eventOptions);
+  facebookEvent("Lead", eventOptions);
 };
 
 /**
@@ -180,7 +183,7 @@ export const facebookLeadEvent = (eventOptions = {}) => {
  * @param {string} [contentData.currency] - Currency code (USD, EUR, etc.)
  */
 export const facebookViewContentEvent = (contentData) => {
-  facebookEvent('ViewContent', contentData);
+  facebookEvent("ViewContent", contentData);
 };
 
 /**
@@ -194,7 +197,7 @@ export const facebookViewContentEvent = (contentData) => {
  * @param {string} cartData.currency - Currency code (USD, EUR, etc.)
  */
 export const facebookAddToCartEvent = (cartData) => {
-  facebookEvent('AddToCart', cartData);
+  facebookEvent("AddToCart", cartData);
 };
 
 /**
@@ -204,7 +207,7 @@ export const facebookAddToCartEvent = (cartData) => {
  * @param {object} checkoutData - Checkout information
  */
 export const facebookInitiateCheckoutEvent = (checkoutData = {}) => {
-  facebookEvent('InitiateCheckout', checkoutData);
+  facebookEvent("InitiateCheckout", checkoutData);
 };
 
 /**
@@ -214,7 +217,7 @@ export const facebookInitiateCheckoutEvent = (checkoutData = {}) => {
  * @param {object} [registrationData] - Registration information
  */
 export const facebookCompleteRegistrationEvent = (registrationData = {}) => {
-  facebookEvent('CompleteRegistration', registrationData);
+  facebookEvent("CompleteRegistration", registrationData);
 };
 
 /**
@@ -227,7 +230,7 @@ export const facebookCompleteRegistrationEvent = (registrationData = {}) => {
  * @param {string} [trialData.predicted_ltv] - Predicted lifetime value
  */
 export const facebookStartTrialEvent = (trialData) => {
-  facebookEvent('StartTrial', trialData);
+  facebookEvent("StartTrial", trialData);
 };
 
 /**
@@ -241,7 +244,7 @@ export const facebookStartTrialEvent = (trialData) => {
 export const facebookTrackWithConsent = (trackingFunction, ...args) => {
   if (!config.hasConsent) {
     if (config.enableDebugMode) {
-      console.warn('Facebook Pixel tracking skipped due to missing consent');
+      console.warn("Facebook Pixel tracking skipped due to missing consent");
     }
     return false;
   }
@@ -262,12 +265,12 @@ export const facebookTrackWithConsent = (trackingFunction, ...args) => {
  */
 export const initializeFacebookPixel = (pixelId, options = {}) => {
   if (!pixelId) {
-    console.error('Facebook Pixel ID is required for initialization');
+    console.error("Facebook Pixel ID is required for initialization");
     return;
   }
 
   if (!window.fbq) {
-    console.error('Facebook Pixel base code not found on page');
+    console.error("Facebook Pixel base code not found on page");
     return;
   }
 
@@ -277,7 +280,7 @@ export const initializeFacebookPixel = (pixelId, options = {}) => {
   if (options.hasConsent !== undefined) setUserConsentStatus(options.hasConsent);
 
   // Initialize pixel with provided ID
-  window.fbq('init', pixelId);
+  window.fbq("init", pixelId);
 
   if (config.enableDebugMode) {
     console.info(`Facebook Pixel initialized with ID: ${pixelId}`);

@@ -1,4 +1,3 @@
-
 /**
  * React Facebook Pixel Tracker
  * An easy-to-use solution for implementing Facebook Pixel tracking in React applications
